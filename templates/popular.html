@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>熱門</title>
-    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
 </head>
 <body>
 
@@ -21,25 +21,25 @@
 
     <main class="main-content">
 
-        <a href="sub-web/disk01.html" target="_blank" class="bordered-box link-block">
+        <a href="disk01" target="_blank" class="bordered-box link-block">
             <div class="photo-row">
                 <h2>🔥 Top1</h2>
-                <img src="image/image00001.jpg" alt="熱門1" class="photo-full" />
+                <img src="static/image/image00001.jpg" alt="熱門1" class="photo-full" />
                 <p class="photo-text">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
             </div>
         </a>
 
         <section class="photo-grid">
 
-            <a href="sub-web/disk01.html" target="_blank" class="bordered-box link-block photo-card">
+            <a href="disk02" target="_blank" class="bordered-box link-block photo-card">
                 <h2>🔥 Top2</h2>
-                <img src="image/image00003.jpg" alt="熱門2" />
+                <img src="static/image/image00003.jpg" alt="熱門2" />
                 <p class="photo-text">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
             </a>
 
-            <a href="sub-web/disk01.html" target="_blank" class="bordered-box link-block photo-card">
+            <a href="disk03" target="_blank" class="bordered-box link-block photo-card">
                 <h2>🔥 Top3</h2>
-                <img src="image/image00005.jpg" alt="熱門3" />
+                <img src="static/image/image00005.jpg" alt="熱門3" />
                 <p class="photo-text">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
             </a>
 

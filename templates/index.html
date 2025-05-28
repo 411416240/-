@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>記錄</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar-container">
+      <h1 class="site-title">黑膠唱片與經典專輯小冊紀錄</h1>
+      <nav class="nav-links">
+        <a href="main.html">首頁</a>
+        <a href="popular.html">熱門</a>
+        <a href="index.html">記錄</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page-container">
+
+    <aside class="sidebar">
+      <h2>標籤</h2>
+      <div class="tags">
+        <button class="tag" onclick="filterByTag('Funk')">Funk</button>
+        <button class="tag" onclick="filterByTag('60年代')">60年代</button>
+        <button class="tag" onclick="filterByTag('日語')">日語</button>
+        <button class="tag" onclick="filterByTag('民謠')">民謠</button>
+        <button class="tag" onclick="filterByTag('華語')">華語</button>
+        <button class="tag" onclick="filterByTag('華語')">英語</button>
+      </div>
+    </aside>
+
+    <main class="card-main-content">
+      <div id="card-grid" class="card-grid"></div>
+
+      <div class="pagination">
+        <a href="#" onclick="renderPage(1)">1</a>
+        <a href="#" onclick="renderPage(2)">2</a>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- page -->
+  <script>
+function renderPage(page) {
+  const cardGrid = document.getElementById("card-grid");
+  cardGrid.innerHTML = '';
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const filterTag = urlParams.get('tag');
+  const filteredCards = filterTag
+    ? allCards.filter(card => card.tags && card.tags.includes(filterTag))
+    : allCards;
+
+  const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
+  if (page > totalPages) page = 1;
+
+  const start = (page - 1) * cardsPerPage;
+  const end = start + cardsPerPage;
+  const pageCards = filteredCards.slice(start, end);
+
+  if (pageCards.length === 0) {
+    cardGrid.innerHTML = '<p style="color:white; padding:20px;">⚠ 無符合資料</p>';
+  }
+
+  pageCards.forEach(card => {
+    const tagsAttr = card.tags ? `data-tags="${card.tags}"` : "";
+    const cardHtml = `
+      <a href="${card.url}" class="card" target="_blank" ${tagsAttr}>
+        <img src="${card.img}" alt="圖片">
+        <div class="card-text">
+          <p>${card.text}</p>
+        </div>
+      </a>
+    `;
+    cardGrid.innerHTML += cardHtml;
+  });
+}
+
+function filterByTag(tag) {
+  window.location.href = `index.html?tag=${encodeURIComponent(tag)}&page=1`;
+}
+
+function renderPagination(filteredLength) {
+  const pagination = document.querySelector('.pagination');
+  const urlParams = new URLSearchParams(window.location.search);
+  const tag = urlParams.get('tag') || '';
+  const totalPages = Math.ceil(filteredLength / cardsPerPage);
+
+  const pageLinks = Array.from({length: totalPages}, (_, i) => {
+    const page = i + 1;
+    const href = `index.html?page=${page}${tag ? `&tag=${encodeURIComponent(tag)}` : ''}`;
+    return `<a href="${href}">${page}</a>`;
+  });
+
+  pagination.innerHTML = pageLinks.join('');
+}
+
+function renderTagInfo() {
+  const tagBar = document.querySelector('.tag');
+  const urlParams = new URLSearchParams(window.location.search);
+  const tag = urlParams.get('tag');
+  if (tag) {
+    const info = document.createElement('div');
+    info.style.color = 'white';
+    info.style.marginTop = '10px';
+    info.innerHTML = `當前標籤：<strong>${tag}</strong>　<a href="index.html" style="color:lightblue;">清除標籤</a>`;
+    document.querySelector('.tags').appendChild(info);
+  }
+}
+
+window.onload = () => {
+  const params = new URLSearchParams(window.location.search);
+  const page = parseInt(params.get('page')) || 1;
+  const tag = params.get('tag');
+  const filteredCards = tag
+    ? allCards.filter(card => card.tags && card.tags.includes(tag))
+    : allCards;
+  renderPage(page);
+  renderPagination(filteredCards.length);
+  renderTagInfo();
+};
+</script>
+
+<script>
+const allCards = [
+  { img: 'static/image/image00001.jpg', text: 'xxxxxxxxxxxxxxxxxxxxxxxx', url: 'disk01', tags: ['Funk', '60年代'] },
+  { img: 'static/image/image00003.jpg', text: 'xxxxxxxxxxxxxxxxxxxxxxxx', url: 'disk02', tags: ['華語','民謠'] },
+  { img: 'static/image/image00005.jpg', text: 'xxxxxxxxxxxxxxxxxxxxxxxx', url: 'disk03', tags: ['華語','民謠'] },
+  { img: 'static/image/image00007.jpg', text: 'xxxxxxxxxxxxxxxxxxxxxxxx', url: 'disk04', tags: ['日語'] },
+  { img: 'static/image/image00009.jpg', text: 'xxxxxxxxxxxxxxxxxxxxxxxx', url: 'disk05', tags: ['英語'] },
+  { img: 'static/image/image00011.jpg', text: 'xxxxxxxxxxxxxxxxxxxxxxxx', url: 'disk06', tags: ['英語'] },
+  { img: 'static/image/image00013.jpg', text: 'xxxxxxxxxxxxxxxxxxxxxxxx', url: 'disk07', tags: ['華語'] },
+  { img: 'static/image/image00015.jpg', text: 'xxxxxxxxxxxxxxxxxxxxxxxx', url: 'disk08', tags: ['華語'] },
+  { img: 'static/image/image00017.jpg', text: 'xxxxxxxxxxxxxxxxxxxxxxxx', url: 'disk09', tags: ['華語'] },
+  { img: 'static/image/image00018.jpg', text: 'xxxxxxxxxxxxxxxxxxxxxxxx', url: 'disk10', tags: ['華語'] },
+  { img: 'static/image/image00020.jpg', text: 'xxxxxxxxxxxxxxxxxxxxxxxx', url: 'disk11', tags: ['華語'] },
+  { img: 'static/image/image00022.jpg', text: 'xxxxxxxxxxxxxxxxxxxxxxxx', url: 'disk12', tags: ['華語'] },
+];
+const cardsPerPage = 6;
+
+
+function renderPage(page) {
+  const cardGrid = document.getElementById("card-grid");
+  cardGrid.innerHTML = '';
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const filterTag = urlParams.get('tag');
+  const filteredCards = filterTag
+    ? allCards.filter(card => card.tags.includes(filterTag))
+    : allCards;
+
+  const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
+  if (page > totalPages) page = 1;
+
+  const start = (page - 1) * cardsPerPage;
+  const end = start + cardsPerPage;
+  const pageCards = filteredCards.slice(start, end);
+
+  if (pageCards.length === 0) {
+    cardGrid.innerHTML = '<p style="color:white; padding:20px;">⚠ 無符合資料</p>';
+  }
+
+  pageCards.forEach(card => {
+    const tagsAttr = card.tags ? `data-tags="${card.tags}"` : "";
+    const cardHtml = `
+      <a href="${card.url}" class="card" target="_blank" ${tagsAttr}>
+        <img src="${card.img}" alt="圖片">
+        <div class="card-text">
+          <p>${card.text}</p>
+        </div>
+      </a>
+    `;
+    cardGrid.innerHTML += cardHtml;
+  });
+}
+
+function filterByTag(tag) {
+  window.location.href = `index.html?tag=${encodeURIComponent(tag)}&page=1`;
+}
+
+function renderPagination(filteredLength) {
+  const pagination = document.querySelector('.pagination');
+  const urlParams = new URLSearchParams(window.location.search);
+  const tag = urlParams.get('tag') || '';
+  const totalPages = Math.ceil(filteredLength / cardsPerPage);
+
+  const pageLinks = Array.from({length: totalPages}, (_, i) => {
+    const page = i + 1;
+    const href = `index.html?page=${page}${tag ? `&tag=${encodeURIComponent(tag)}` : ''}`;
+    return `<a href="${href}">${page}</a>`;
+  });
+
+  pagination.innerHTML = pageLinks.join('');
+}
+
+function renderTagInfo() {
+  const tagBar = document.querySelector('.tag');
+  const urlParams = new URLSearchParams(window.location.search);
+  const tag = urlParams.get('tag');
+  if (tag) {
+    const info = document.createElement('div');
+    info.style.color = 'white';
+    info.style.marginTop = '10px';
+    info.innerHTML = `當前標籤：<strong>${tag}</strong>　<a href="index.html" style="color:lightblue;">清除標籤</a>`;
+    document.querySelector('.tags').appendChild(info);
+  }
+}
+
+window.onload = () => {
+  const params = new URLSearchParams(window.location.search);
+  const page = parseInt(params.get('page')) || 1;
+  const tag = params.get('tag');
+  const filteredCards = tag
+    ? allCards.filter(card => card.tags && card.tags.includes(tag))
+    : allCards;
+  renderPage(page);
+  renderPagination(filteredCards.length);
+  renderTagInfo();
+};
+</script>
+</body>
+</html>
