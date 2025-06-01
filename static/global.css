@@ -262,6 +262,10 @@ index
 .tag:hover {
   background-color: #666;
 }
+.tag.selected {
+  background-color: yellow;
+  color: black;
+}
 
 /* Cards */
 .card-grid {
@@ -300,13 +304,18 @@ index
   margin-top: 20px;
 }
 .pagination a {
-  color: #ffc66d;
+  color: white;
   padding: 6px 10px;
   text-decoration: none;
   font-weight: bold;
 }
 .pagination a:hover {
   text-decoration: underline;
+}
+.pagination a.active {
+  text-decoration: underline;
+  font-weight: bold;
+  color: yellow; /* 保留你目前的顏色設計 */
 }
 
 /* Tag Info Section */

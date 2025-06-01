@@ -92,12 +92,11 @@ def comments():
                 return jsonify(json.load(f))
         return jsonify([])
 
-# 可選：為 main.html 提供路由
-@app.route("/main.html")
+@app.route("/main")
 def main_page():
     return render_template("main.html")
 
-@app.route("/popular.html")
+@app.route("/popular")
 def popular_page():
     return render_template("popular.html")
 
